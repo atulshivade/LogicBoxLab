@@ -613,10 +613,154 @@
             .stat {
                 text-align: center;
             }
+
+            .redirect-banner {
+                flex-direction: column;
+                gap: 0.75rem;
+                padding: 1rem;
+            }
+
+            .redirect-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Redirect Banner */
+        .redirect-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 200;
+            background: linear-gradient(135deg, var(--bg-card), #1f1f23);
+            border-bottom: 1px solid var(--border);
+            padding: 0.75rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            animation: slideDown 0.5s ease;
+        }
+
+        .redirect-banner.hidden {
+            display: none;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .redirect-text {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .redirect-text i {
+            color: var(--accent);
+        }
+
+        .countdown {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            background: var(--accent);
+            color: var(--bg-dark);
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .redirect-buttons {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .redirect-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .redirect-btn.go {
+            background: var(--accent);
+            color: var(--bg-dark);
+        }
+
+        .redirect-btn.go:hover {
+            background: var(--accent-light);
+        }
+
+        .redirect-btn.stay {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .redirect-btn.stay:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--text-muted);
+        }
+
+        /* Adjust nav when banner is visible */
+        body.has-banner nav {
+            top: 52px;
+        }
+
+        body.has-banner .hero {
+            padding-top: 12rem;
+        }
+
+        @media (max-width: 640px) {
+            body.has-banner nav {
+                top: 90px;
+            }
+
+            body.has-banner .hero {
+                padding-top: 14rem;
+            }
         }
     </style>
 </head>
-<body>
+<body class="has-banner">
+    <!-- Redirect Banner -->
+    <div class="redirect-banner" id="redirectBanner">
+        <div class="redirect-text">
+            <i class="fas fa-arrow-right"></i>
+            <span>Redirecting to Cyprus Tax Calculator in <span class="countdown" id="countdown">5</span> seconds...</span>
+        </div>
+        <div class="redirect-buttons">
+            <button class="redirect-btn go" onclick="redirectNow()">
+                <i class="fas fa-calculator"></i>
+                Go Now
+            </button>
+            <button class="redirect-btn stay" onclick="cancelRedirect()">
+                <i class="fas fa-hand"></i>
+                Stay Here
+            </button>
+        </div>
+    </div>
+
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
@@ -798,5 +942,46 @@
             <p class="footer-copy">© 2026 LogicBox Lab. All rights reserved.</p>
         </div>
     </footer>
+    <!-- Redirect Script -->
+    <script>
+        let countdown = 5;
+        let redirectTimer;
+        let countdownTimer;
+        const targetUrl = 'https://cyprus-calculators.logicboxlab.com/';
+
+        function updateCountdown() {
+            const countdownEl = document.getElementById('countdown');
+            if (countdownEl) {
+                countdownEl.textContent = countdown;
+            }
+        }
+
+        function startRedirect() {
+            countdownTimer = setInterval(() => {
+                countdown--;
+                updateCountdown();
+                if (countdown <= 0) {
+                    clearInterval(countdownTimer);
+                    window.location.href = targetUrl;
+                }
+            }, 1000);
+        }
+
+        function redirectNow() {
+            window.location.href = targetUrl;
+        }
+
+        function cancelRedirect() {
+            clearInterval(countdownTimer);
+            const banner = document.getElementById('redirectBanner');
+            if (banner) {
+                banner.classList.add('hidden');
+            }
+            document.body.classList.remove('has-banner');
+        }
+
+        // Start countdown when page loads
+        document.addEventListener('DOMContentLoaded', startRedirect);
+    </script>
 </body>
 </html>
