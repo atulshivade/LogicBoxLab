@@ -76,14 +76,9 @@
         }
 
         .logo-icon {
-            width: 36px;
             height: 36px;
-            background: linear-gradient(135deg, var(--accent), var(--accent-light));
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
+            width: auto;
+            object-fit: contain;
         }
 
         .nav-links {
@@ -288,8 +283,7 @@
     <nav>
         <div class="nav-container">
             <a href="index.html" class="logo">
-                <div class="logo-icon">⚡</div>
-                LogicBox Lab
+                <img src="logo.png" alt="LogicBox Lab" class="logo-icon">
             </a>
             <ul class="nav-links">
                 <li><a href="index.html#services">Services</a></li>
@@ -367,7 +361,7 @@
     <footer>
         <div class="footer-content">
             <div class="footer-logo">
-                <span>⚡</span> LogicBox Lab
+                <img src="logo.png" alt="LogicBox Lab" style="height: 32px; width: auto;">
             </div>
             <div class="footer-links">
                 <a href="https://cyprus-calculators.logicboxlab.com/">Cyprus Tax Calculator</a>
